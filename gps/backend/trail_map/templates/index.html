@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+
+{% block title %}Log In | Private Trail Map{% endblock %}
+
+{% block active_login %}active{% endblock %}
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/my_style.css' %}">
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_WKoA2aULKI08xIU4LxspL-xwTsi5rS0"></script>
+{% endblock %}
+{% block contents %}
+    <div class="p-5 rounded" style="margin-top: 70px;">
+        <h1 class="text-start text-danger mb-4">移動経路検索</h1>
+        <div class="border border-dark p-3 rounded mb-4 bg-light">
+            <h4 class="mb-3">現在の座標</h4>
+            <div class="row row-cols-1 row-cols-md-3">
+                <div class="col mb-2">緯度: <span id="lat" class="text-primary">-</span></div>
+                <div class="col mb-2">経度: <span id="log" class="text-primary">-</span></div>
+                <div class="col mb-2">総移動距離：<span id="total_distance" class="text-info">0</span>m</div>
+            </div>
+        </div>
+        <form action="{% url 'trail_map:get_location_data' %}" method="post">
+            <div class="row mb-3">
+                <div class="col-md-6">
+                    <label for="from-datetime" class="form-label">開始日時:</label>
+                    <input class="form-control border-dark" id="from-datetime" type="datetime-local" name="from"
+                           value="{{ DATETIME }}">
+                </div>
+                <div class="col-md-6">
+                    <label for="to-datetime" class="form-label">終了日時:</label>
+                    <input class="form-control border-dark" id="to-datetime" type="datetime-local" name="to"
+                           value="{{ DATETIME }}">
+                </div>
+            </div>
+            <div class="text-start">
+                <button class="btn btn-outline-primary btn-lg" type="button" onclick="initMap()">表示</button>
+            </div>
+        </form>
+        <div id="map" class="mt-4" style="height: 350px; border: 1px dashed #aaa; border-radius: 6px;"></div>
+        <script src="{% static 'js/trail_map.js' %}"></script>
+    </div>
+{% endblock %}
